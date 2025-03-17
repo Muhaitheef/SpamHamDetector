@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - ArabSpamX</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .team-member {
+            text-align: center;
+            max-width: 180px;
+            transition: transform 0.3s ease;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+            box-shadow: 0 5px 15px rgba(0, 91, 187, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member img:hover {
+            transform: scale(1.1);
+        }
+
+        .team-member h3 {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .team-member p {
+            font-size: 14px;
+            color: #777;
+            margin: 5px 0;
+        }
+
+        /* LinkedIn Button with Logo */
+        .linkedin-btn {
+            background-color: #0077b5;
+            color: #ffffff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .linkedin-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .linkedin-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #999;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .team-member {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🚀 ArabSpamX - Spam Detector</h1>
+        <h2>King Saud University - Computer Science Department</h2>
+    </div>
+
+    <div class="team-container">
+        <!-- Mohammed Al-Zoubaidi -->
+        <div class="team-member">
+            <img src="mohammed.png" alt="Mohammed Al-Zoubaidi">
+            <h3>Mohammed Ali Al-Zoubaidi</h3>
+            <p>443100700</p>
+            <a href="https://www.linkedin.com/in/m-a-alzubaidi/" target="_blank" class="linkedin-btn">
+                <img src="image-removebg-preview.png" alt="LinkedIn" />
+                Connect on LinkedIn
+            </a>
+        </div>
+
+        <!-- Naif Al-Fayez -->
+        <div class="team-member">
+            <img src="naif.png" alt="Naif Al-Fayez">
+            <h3>Naif Abdulaziz Al-Fayez</h3>
+            <p>443100816</p>
+            <a href="https://www.linkedin.com/in/naif-alfayez/" target="_blank" class="linkedin-btn">
+                <img src="image-removebg-preview.png" alt="LinkedIn" />
+                Connect on LinkedIn
+            </a>
+        </div>
+
+        <!-- Faisal Al-Haqbani -->
+        <div class="team-member">
+            <img src="faisal.png" alt="Faisal Al-Haqbani">
+            <h3>Faisal Khalid Al-Haqbani</h3>
+            <p>443101660</p>
+            <a href="https://www.linkedin.com/in/faisal-khaled-alhaqbani/" target="_blank" class="linkedin-btn">
+                <img src="image-removebg-preview.png" alt="LinkedIn" />
+                Connect on LinkedIn
+            </a>
+        </div>
+
+        <!-- Mohammed Al-Muhaitheef -->
+        <div class="team-member">
+            <img src="me.png" alt="Mohammed Al-Muhaitheef">
+            <h3>Mohammed Abdullah Al-Muhaitheef</h3>
+            <p>443101706</p>
+            <a href="https://www.linkedin.com/in/muhaitheef/" target="_blank" class="linkedin-btn">
+                <img src="image-removebg-preview.png" alt="LinkedIn" />
+                Connect on LinkedIn
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Supervised by: Dr. Omar Alobaid | Spring 2024
+    </div>
+
+</body>
+</html>

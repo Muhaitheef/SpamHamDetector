@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArabSpamX - Spam Detector</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Container */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        /* Input Styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        /* Button Styling */
+        .btn {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 12px;
+            outline: none;
+            display: inline-block;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 91, 187, 0.3);
+        }
+
+        /* Meet the Team Button */
+        .btn-secondary {
+            background-color: #6c757d;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Result Styling */
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        #result.show {
+            opacity: 1;
+        }
+
+        .spam {
+            color: #e74c3c;
+        }
+
+        .not-spam {
+            color: #27ae60;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            input[type="text"] {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 ArabSpamX - Spam Detector</h1>
+        <input type="text" id="tweetInput" placeholder="Enter a tweet..." />
+        <button class="btn" onclick="checkSpam()">Check</button>
+        <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        async function checkSpam() {
+            let tweet = document.getElementById("tweetInput").value;
+            if (tweet.trim() === "") {
+                alert("Please enter a tweet!");
+                return;
+            }
+
+            // Clear previous result
+            const resultElement = document.getElementById("result");
+            resultElement.classList.remove("show");
+            resultElement.textContent = "";
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ tweet: tweet }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+
+                const data = await response.json();
+
+                let resultText = data.prediction === 1 ? "🚨 Spam" : "✅ Not Spam";
+                resultElement.textContent = `Result: ${resultText}`;
+                resultElement.classList.add("show");
+                resultElement.classList.toggle("spam", data.prediction === 1);
+                resultElement.classList.toggle("not-spam", data.prediction === 0);
+            } catch (error) {
+                console.error("❌ Error:", error);
+                resultElement.textContent = "Error checking tweet";
+                resultElement.classList.add("show");
+                resultElement.style.color = "#e74c3c";
+            }
+        }
+    </script>
+
+</body>
+</html>
