@@ -8,8 +8,10 @@ app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "*"}})  # Allow all origins
 
 # Load Model & Vectorizer
-MODEL_PATH = "backend/spam_model.pkl"
-VECTORIZER_PATH = "backend/vectorizer.pkl"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "spam_model.pkl")
+VECTORIZER_PATH = os.path.join(BASE_DIR, "vectorizer.pkl")
 
 if not os.path.exists(MODEL_PATH) or not os.path.exists(VECTORIZER_PATH):
     raise FileNotFoundError("Model or vectorizer file not found! Train the model first.")
