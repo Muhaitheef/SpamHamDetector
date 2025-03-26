@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pickle
@@ -8,7 +9,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "*"}})  # Allow all origins
 
 # Load Model & Vectorizer
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "spam_model.pkl")
 VECTORIZER_PATH = os.path.join(BASE_DIR, "vectorizer.pkl")
@@ -34,17 +34,24 @@ def predict():
 
     # Preprocess input
     tweet_tfidf = vectorizer.transform([tweet])
-    
+
     # Predict
     prediction = model.predict(tweet_tfidf)[0]
-    print(f"✅ Prediction: {prediction}")
-    
-    return jsonify({"prediction": int(prediction)})
+    confidence = model.predict_proba(tweet_tfidf)[0][1]  # Probability of spam (class 1)
+
+    print(f"✅ Prediction: {prediction}, Confidence: {confidence:.4f}")
+
+    return jsonify({
+        "prediction": int(prediction),
+        "confidence": round(float(confidence), 4)
+    })
 
 # Start Flask Server
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "healthy", "message": "Model and server are running"}), 200
+
 if __name__ == "__main__":
     print("🚀 Flask is running on http://127.0.0.1:5000")
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5050)
+    

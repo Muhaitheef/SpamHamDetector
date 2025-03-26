@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArabSpamX - Spam Detector</title>
+  <style>
+   body {
+  font-family: 'Poppins', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #dfe9f3, #e1f0ff, #d0e4f5, #eaf6ff);
+  background-size: 400% 400%;
+  animation: gradientFlow 15s ease infinite;
+  display: block; /* ✅ Not flex */
+  overflow-y: auto; /* ✅ Enables scroll */
+  color: #333;
+}
+
+@keyframes gradientPulse {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+    .cursor {
+  display: inline-block;
+  color: #007bff;
+  font-weight: bold;
+  animation: blink 0.7s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+.container {
+  background-color: #ffffff;
+  padding: 40px;
+  margin: 60px auto; /* ✅ Top spacing + center horizontally */
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.1);
+  max-width: 550px;
+  width: 90%;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    .logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 24px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #007bff;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: none;
+     
+      min-height: 80px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #007bff;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: 12px;
+      outline: none;
+      display: inline-block;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 91, 187, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #result.show {
+      opacity: 1;
+    }
+
+    .spam {
+      color: #e74c3c;
+    }
+
+    .not-spam {
+      color: #27ae60;
+    }
+
+    .confidence-container {
+      width: 100%;
+      background-color: #eee;
+      border-radius: 8px;
+      
+      height: 20px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .confidence-bar {
+      height: 100%;
+      text-align: center;
+      line-height: 20px;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      transition: width 0.5s ease-in-out;
+      
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      textarea {
+        font-size: 14px;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 12px 24px;
+      }
+    }
+    @keyframes blueShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+#historyList li {
+  direction: rtl;
+  text-align: right;
+  padding-right: 10px;
+}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
+    <h1><span id="typing-text"></span><span class="cursor">|</span></h1>
+    <textarea id="tweetInput" placeholder="Enter a post..." oninput="autoGrow(this)"></textarea>
+    <button class="btn" onclick="checkSpam()">Check</button>
+    <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
+    <p id="result"></p>
+    <div class="confidence-container" id="confidenceContainer">
+      <div class="confidence-bar" id="confidenceBar">0%</div>
+    </div>
+    <div id="history" style="margin-top: 40px; text-align: left;">
+      <h3 style="margin-bottom: 15px; font-size: 20px; color: #007bff; display: flex; align-items: center; gap: 8px;">
+        🧾 <span>Past Predictions</span>
+      </h3>
+      <ul id="historyList" style="list-style: none; padding-left: 0; max-height: 180px; overflow-y: auto; font-size: 15px;"></ul>
+    </div>
+  </div>
+
+  <script>
+    function autoGrow(textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+    const titleText = "🚀 ArabSpamX - Spam Detector";
+  const typingTarget = document.getElementById("typing-text");
+
+  let index = 0;
+  function typeTitle() {
+    if (index < titleText.length) {
+      typingTarget.textContent += titleText.charAt(index);
+      index++;
+      setTimeout(typeTitle, 70); // Speed of typing
+    }
+  }
+
+  window.onload = typeTitle;
+  async function checkSpam() {
+  const tweet = document.getElementById("tweetInput").value;
+  const resultElement = document.getElementById("result");
+  const confidenceBar = document.getElementById("confidenceBar");
+  const confidenceContainer = document.getElementById("confidenceContainer");
+
+  if (tweet.trim() === "") {
+    alert("Please enter a post!");
+    return;
+  }
+
+  resultElement.classList.remove("show");
+  resultElement.textContent = "";
+  confidenceContainer.style.display = "none";
+
+  try {
+    const response = await fetch("http://127.0.0.1:5050/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tweet: tweet }),
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch data");
+
+    const data = await response.json();
+    const prediction = data.prediction;
+    const confidence = Math.round(data.confidence * 100); // convert to percentage
+
+    let resultText = prediction === 1 ? "🚨 Spam" : "✅ Not Spam";
+    resultElement.textContent = `Result: ${resultText}`;
+    resultElement.classList.add("show");
+    resultElement.classList.toggle("spam", prediction === 1);
+    resultElement.classList.toggle("not-spam", prediction === 0);
+
+    // Show and update confidence bar
+    confidenceContainer.style.display = "block";
+    confidenceBar.textContent = `${confidence}%`;
+    confidenceBar.style.width = `${confidence}%`;
+
+    if (confidence > 70) {
+      confidenceBar.style.backgroundColor = "#27ae60"; // green
+    } else if (confidence > 50) {
+      confidenceBar.style.backgroundColor = "#f1c40f"; // yellow
+    } else {
+      confidenceBar.style.backgroundColor = "#e74c3c"; // red
+    }
+    const historyList = document.getElementById("historyList");
+const listItem = document.createElement("li");
+
+// Style the list item box
+listItem.style.padding = "12px";
+listItem.style.marginBottom = "12px";
+listItem.style.border = "1px solid #e0e0e0";
+listItem.style.borderRadius = "10px";
+listItem.style.backgroundColor = "#f8f9fc";
+listItem.style.boxShadow = "0 1px 4px rgba(0, 0, 0, 0.03)";
+listItem.style.lineHeight = "1.5";
+
+listItem.innerHTML = `
+  <div style="font-size: 16px; font-weight: bold; color: ${prediction === 1 ? '#e74c3c' : '#27ae60'};">
+    ${prediction === 1 ? "🚫 Spam" : "✅ Not Spam"}
+  </div>
+  <div style="margin-top: 6px; font-size: 14px; color: #333;">
+    "${tweet}"
+  </div>
+  <div style="margin-top: 4px; font-size: 12px; color: #555;">
+    Confidence: ${confidence}%
+  </div>
+`;
+
+historyList.prepend(listItem);
+
+// Limit to 5
+while (historyList.children.length > 5) {
+  historyList.removeChild(historyList.lastChild);
+}
+
+  } catch (error) {
+    console.error("❌ Error:", error);
+    resultElement.textContent = "Error checking post";
+    resultElement.classList.add("show");
+    resultElement.style.color = "#e74c3c";
+  }
+}
+  </script>
+
+</body>
+</html>
