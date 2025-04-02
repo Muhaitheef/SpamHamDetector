@@ -1,6 +1,4 @@
-flask
-flask-cors
-scikit-learn
-joblib
+fastapi
 uvicorn
-gunicorn
+scikit-learn
+flask-cors
