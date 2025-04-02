@@ -255,11 +255,11 @@
   confidenceContainer.style.display = "none";
 
   try {
-    const response = await fetch("https://arabspamx.muhaitheef.info/predict"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tweet: tweet }),
-    });
+    const response = await fetch("https://arabspamx.muhaitheef.info/predict", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ tweet: tweet }),
+});
 
     if (!response.ok) throw new Error("Failed to fetch data");
 
