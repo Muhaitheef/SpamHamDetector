@@ -29,12 +29,7 @@
     background-position: 0% 50%;
   }
 }
-    .cursor {
-  display: inline-block;
-  color: #007bff;
-  font-weight: bold;
-  animation: blink 0.7s steps(2, start) infinite;
-}
+  
 
 @keyframes blink {
   to {
@@ -203,7 +198,6 @@
 
   <div class="container">
     <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
-    <h1><span id="typing-text"></span><span class="cursor">|</span></h1>
     <textarea id="tweetInput" placeholder="Enter a post..." oninput="autoGrow(this)"></textarea>
     <button class="btn" onclick="checkSpam()">Check</button>
     <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
