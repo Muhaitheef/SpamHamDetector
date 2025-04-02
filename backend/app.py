@@ -52,12 +52,12 @@ def health():
     return jsonify({"status": "healthy", "message": "Model and server are running"}), 200
 
 if __name__ == "__main__":
-    # Warm up the model by running a dummy prediction on startup
-print("🔥 Warming up the model...")
-dummy_text = "Hello, this is a test"
-vector = vectorizer.transform([dummy_text])
-model.predict(vector)
-print("✅ Model warm-up complete.")
+    print("🔥 Warming up the model...")
+    dummy_text = "Hello, this is a test"
+    vector = vectorizer.transform([dummy_text])
+    model.predict(vector)
+    print("✅ Model warm-up complete.")
+
     print("🚀 Flask is running on http://127.0.0.1:5000")
     app.run(debug=True, host="0.0.0.0", port=5050)
     
