@@ -71,7 +71,9 @@
       font-weight: 600;
       margin-bottom: 24px;
     }
-
+    #hamBar, #spamBar {
+  transition: width 0.5s ease-in-out;
+}
     textarea {
       width: 100%;
       padding: 14px;
@@ -154,15 +156,12 @@
     }
 
     .confidence-bar {
-      height: 100%;
-      text-align: center;
-      line-height: 20px;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      transition: width 0.5s ease-in-out;
-      
-    }
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
     @media (max-width: 500px) {
       .container {
@@ -210,7 +209,10 @@
     <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
     <p id="result"></p>
     <div class="confidence-container" id="confidenceContainer">
-      <div class="confidence-bar" id="confidenceBar">0%</div>
+      <div class="confidence-bar">
+        <div id="hamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px;"></div>
+<div id="spamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px;"></div>
+      </div>
     </div>
     <div id="history" style="margin-top: 40px; text-align: left;">
       <h3 style="margin-bottom: 15px; font-size: 20px; color: #007bff; display: flex; align-items: center; gap: 8px;">
@@ -241,7 +243,6 @@
   async function checkSpam() {
   const tweet = document.getElementById("tweetInput").value;
   const resultElement = document.getElementById("result");
-  const confidenceBar = document.getElementById("confidenceBar");
   const confidenceContainer = document.getElementById("confidenceContainer");
 
   if (tweet.trim() === "") {
@@ -274,20 +275,29 @@
 
     // Show and update confidence bar
     confidenceContainer.style.display = "block";
-    confidenceBar.textContent = `${confidence}%`;
-    confidenceBar.style.width = `${confidence}%`;
 
-    if (confidence > 70) {
-      confidenceBar.style.backgroundColor = "#27ae60"; // green
-    } else if (confidence > 50) {
-      confidenceBar.style.backgroundColor = "#f1c40f"; // yellow
-    } else {
-      confidenceBar.style.backgroundColor = "#e74c3c"; // red
-    }
-    const historyList = document.getElementById("historyList");
-const listItem = document.createElement("li");
+// Get spam and ham percentages
+const spamPercent = Math.round(data.confidence * 100);
+const hamPercent = 100 - spamPercent;
+
+// Get the bar elements
+const hamBar = document.getElementById("hamBar");
+const spamBar = document.getElementById("spamBar");
+
+// Set widths
+hamBar.style.width = `${hamPercent}%`;
+spamBar.style.width = `${spamPercent}%`;
+
+// Set colors
+hamBar.style.backgroundColor = "#27ae60"; // green
+spamBar.style.backgroundColor = "#e74c3c"; // red
+
+// Set text (only if wide enough to show text)
+hamBar.textContent = hamPercent > 10 ? `Ham ${hamPercent}%` : "";
+spamBar.textContent = spamPercent > 10 ? `Spam ${spamPercent}%` : "";
 
 // Style the list item box
+const listItem = document.createElement("li");
 listItem.style.padding = "12px";
 listItem.style.marginBottom = "12px";
 listItem.style.border = "1px solid #e0e0e0";
