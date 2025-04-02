@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: spamham-backend
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: FLASK_ENV
+        value: development
+    region: frankfurt
+    branch: main
+    repo: https://github.com/Muhaitheef/SpamHamDetector
+    buildFilter:
+      paths:
+        - backend/**
+    rootDir: backend
