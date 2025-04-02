@@ -31,11 +31,6 @@
 }
   
 
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
-}
 .container {
   background-color: #ffffff;
   padding: 40px;
@@ -197,7 +192,8 @@
 <body>
 
   <div class="container">
-    <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
+   <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
+<h1><span id="typing-text"></span></h1>
     <textarea id="tweetInput" placeholder="Enter a post..." oninput="autoGrow(this)"></textarea>
     <button class="btn" onclick="checkSpam()">Check</button>
     <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
