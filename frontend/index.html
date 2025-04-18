@@ -5,83 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ArabSpamX - Spam Detector</title>
   <link rel="icon" type="image/png" href="logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-   body {
-  font-family: 'Poppins', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #dfe9f3, #e1f0ff, #d0e4f5, #eaf6ff);
-  background-size: 400% 400%;
-  animation: gradientFlow 15s ease infinite;
-  display: block; /* ✅ Not flex */
-  overflow-y: auto; /* ✅ Enables scroll */
-  color: #333;
-}
+    :root {
+      --primary-color: #007bff;
+      --secondary-color: #6c757d;
+      --accent-color: #17a2b8;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #dfe9f3, #e1f0ff, #d0e4f5, #eaf6ff);
+      background-size: 400% 400%;
+      animation: gradientFlow 15s ease infinite;
+      color: #333;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-@keyframes gradientPulse {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-  
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 15px rgba(0, 123, 255, 0.1);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 123, 255, 0.1);
+      width: 100%;
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+    
+    .nav-logo h2 {
+      color: var(--primary-color);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--dark-color);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      background-color: rgba(0, 123, 255, 0.1);
+      color: var(--primary-color);
+    }
+    
+    .nav-link.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+      background: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%230099ff" fill-opacity="0.05" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,208C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
+      background-size: cover;
+      width: 100%;
+    }
+    
+    .hero-title {
+      font-size: 42px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+    }
+    
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--secondary-color);
+      max-width: 700px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
 
-.container {
-  background-color: #ffffff;
-  padding: 40px;
-  margin: 60px auto; /* ✅ Top spacing + center horizontally */
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.1);
-  max-width: 550px;
-  width: 90%;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      width: 100%;
+      align-items: start;
+    }
+    
+    .main-content.with-history {
+      grid-template-columns: 2fr 1fr;
+    }
+    
+    .detector-card {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 123, 255, 0.15);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
 
-    .container:hover {
-      transform: translateY(-5px);
+    .detector-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 123, 255, 0.2);
     }
 
     .logo {
-      width: 120px;
+      width: 130px;
       height: auto;
       margin-bottom: 24px;
       border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.5s ease;
+    }
+    
+    .logo:hover {
+      transform: rotate(5deg) scale(1.05);
     }
 
     h1 {
       color: #007bff;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 600;
       margin-bottom: 24px;
+      text-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
+      text-align: center;
     }
+    
     #hamBar, #spamBar {
-  transition: width 0.5s ease-in-out;
-}
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    
     textarea {
       width: 100%;
-      padding: 14px;
-      margin: 10px 0;
+      padding: 16px;
+      margin: 15px 0;
       border: 2px solid #ddd;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 16px;
       resize: none;
-     
-      min-height: 80px;
+      min-height: 100px;
       box-sizing: border-box;
-      transition: border-color 0.3s ease;
+      transition: all 0.3s ease;
       outline: none;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+      font-family: 'Poppins', Arial, sans-serif;
     }
 
     textarea:focus {
       border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
     }
 
     .btn {
@@ -89,27 +221,47 @@
       color: #ffffff;
       padding: 14px 30px;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      margin-top: 12px;
+      transition: all 0.3s ease;
+      margin-top: 15px;
       outline: none;
       display: inline-block;
       width: 80%;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+      text-align: center;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.7s ease;
     }
 
     .btn:hover {
       background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 91, 187, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 91, 187, 0.4);
+    }
+    
+    .btn:hover::before {
+      left: 100%;
     }
 
     .btn-secondary {
       background-color: #6c757d;
       width: 80%;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .btn-secondary:hover {
@@ -117,15 +269,19 @@
     }
 
     #result {
-      margin-top: 20px;
-      font-size: 20px;
-      font-weight: 500;
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: 600;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: translateY(10px);
+      text-align: center;
+      width: 100%;
     }
 
     #result.show {
       opacity: 1;
+      transform: translateY(0);
     }
 
     .spam {
@@ -138,198 +294,589 @@
 
     .confidence-container {
       width: 100%;
-      background-color: #eee;
-      border-radius: 8px;
-      
-      height: 20px;
-      margin-top: 10px;
+      background-color: #f0f0f0;
+      border-radius: 12px;
+      height: 24px;
+      margin-top: 15px;
       display: none;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .confidence-bar {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-}
+      display: flex;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .history-card {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+      display: none;
+    }
+    
+    .history-card:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    
+    .history-title {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid rgba(0, 123, 255, 0.1);
+      padding-bottom: 15px;
+    }
+
+    #historyList {
+      list-style: none;
+      padding-left: 0;
+      max-height: 500px;
+      overflow-y: auto;
+      font-size: 15px;
+      scrollbar-width: thin;
+      scrollbar-color: #007bff #f0f0f0;
+    }
+    
+    #historyList::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #historyList::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+    
+    #historyList::-webkit-scrollbar-thumb {
+      background-color: #007bff;
+      border-radius: 10px;
+    }
+
+    #historyList li {
+      direction: rtl;
+      text-align: right;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      border: 1px solid #e0e0e0;
+      background-color: #f8f9fc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    
+    #historyList li:hover {
+      transform: translateX(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .features-section {
+      padding: 60px 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      margin-top: 60px;
+      width: 100%;
+    }
+    
+    .features-title {
+      text-align: center;
+      font-size: 32px;
+      color: var(--primary-color);
+      margin-bottom: 50px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .feature-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+      font-size: 40px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    
+    .feature-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--dark-color);
+    }
+    
+    .feature-desc {
+      color: var(--secondary-color);
+      line-height: 1.6;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .back-to-top:hover {
+      background-color: #0056b3;
+      transform: translateY(-5px);
+    }
+    
+    .footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 40px 20px;
+      margin-top: 60px;
+      width: 100%;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+    
+    .footer-logo h3 {
+      color: white;
+      font-size: 20px;
+      margin: 0;
+    }
+    
+    .footer-desc {
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    
+    .footer-links h4 {
+      margin-bottom: 20px;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+      .main-content.with-history {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-title {
+        font-size: 32px;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .history-card {
+        position: static;
+        margin-top: 30px;
+      }
+    }
 
     @media (max-width: 500px) {
-      .container {
-        padding: 20px;
+      .detector-card {
+        padding: 25px;
       }
 
       h1 {
-        font-size: 22px;
+        font-size: 24px;
       }
 
       textarea {
         font-size: 14px;
+        padding: 12px;
       }
 
       .btn {
         font-size: 14px;
         padding: 12px 24px;
+        width: 100%;
+      }
+      
+      #result {
+        font-size: 18px;
+      }
+      
+      .hero-title {
+        font-size: 28px;
+      }
+      
+      .hero {
+        padding: 60px 15px 30px;
+      }
+      
+      .main-content {
+        padding: 20px 15px;
       }
     }
-    @keyframes blueShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-#historyList li {
-  direction: rtl;
-  text-align: right;
-  padding-right: 10px;
-}
   </style>
 </head>
 <body>
-
-  <div class="container">
-   <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
-<h1><span id="typing-text"></span></h1>
-    <textarea id="tweetInput" placeholder="Enter a post..." oninput="autoGrow(this)"></textarea>
-    <button class="btn" onclick="checkSpam()">Check</button>
-    <button class="btn btn-secondary" onclick="window.location.href='about.html'">Meet the Team</button>
-    <p id="result"></p>
-    <div class="confidence-container" id="confidenceContainer">
-      <div class="confidence-bar">
-        <div id="hamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px;"></div>
-<div id="spamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px;"></div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="logo.png" alt="ArabSpamX Logo">
+        <h2>ArabSpamX</h2>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="about.html" class="nav-link">Meet the team</a>
+        <a href="#features" class="nav-link">Features</a>
       </div>
     </div>
-    <div id="history" style="margin-top: 40px; text-align: left;">
-      <h3 style="margin-bottom: 15px; font-size: 20px; color: #007bff; display: flex; align-items: center; gap: 8px;">
-        🧾 <span>Past Predictions</span>
+  </nav>
+
+  <section class="hero">
+    <h1 class="hero-title"><span id="typing-text"></span></h1>
+    <p class="hero-subtitle">Our advanced AI-powered tool helps you identify spam content in Arabic text with high accuracy. Try it now and keep your online experience safe!</p>
+  </section>
+
+  <div class="main-content" id="mainContent">
+    <div class="detector-card">
+      <img src="logo.png" alt="ArabSpamX Logo" class="logo" />
+      <h1>Spam Detection Tool</h1>
+      <textarea id="tweetInput" placeholder="Enter a post..." oninput="autoGrow(this)"></textarea>
+      <button class="btn" onclick="checkSpam()"><i class="fas fa-search"></i> Check</button>
+      <button class="btn btn-secondary" onclick="window.location.href='about.html'"><i class="fas fa-users"></i> Meet the Team</button>
+      <p id="result"></p>
+      <div class="confidence-container" id="confidenceContainer">
+        <div class="confidence-bar">
+          <div id="hamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: 600;"></div>
+          <div id="spamBar" style="height: 100%; display: flex; justify-content: center; align-items: center; color: white; font-size: 12px; font-weight: 600;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="history-card" id="historyCard">
+      <h3 class="history-title">
+        <i class="fas fa-history"></i> <span>Past Predictions</span>
       </h3>
-      <ul id="historyList" style="list-style: none; padding-left: 0; max-height: 180px; overflow-y: auto; font-size: 15px;"></ul>
+      <ul id="historyList"></ul>
     </div>
   </div>
+
+  <section id="features" class="features-section">
+    <h2 class="features-title">Key Features</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3 class="feature-title">Advanced Detection</h3>
+        <p class="feature-desc">Our AI model is specifically trained on Arabic content to provide high-accuracy spam detection.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h3 class="feature-title">Real-time Analysis</h3>
+        <p class="feature-desc">Get instant results with confidence scores to help you make informed decisions.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-history"></i>
+        </div>
+        <h3 class="feature-title">History Tracking</h3>
+        <p class="feature-desc">Keep track of your past predictions for reference and comparison.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="footer">
+    <div class="footer-content">
+      <div>
+        <div class="footer-logo">
+          <img src="logo.png" alt="ArabSpamX Logo">
+          <h3>ArabSpamX</h3>
+        </div>
+        <p class="footer-desc">An advanced AI-powered tool for detecting spam content in Arabic text, developed as a graduation project by a team of four dedicated students.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="about.html">Meet the team</a></li>
+          <li><a href="#features">Features</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h4>About Project</h4>
+        <ul>
+          <li><i class="fas fa-graduation-cap"></i> Graduation Project</li>
+          <li><i class="fas fa-users"></i> Team of 4 Students</li>
+          <li><i class="fas fa-university"></i> University Project</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      &copy; 2023 ArabSpamX. All rights reserved.
+    </div
+  </footer>
+
+  <a href="#" class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </a>
 
   <script>
     function autoGrow(textarea) {
       textarea.style.height = "auto";
       textarea.style.height = textarea.scrollHeight + "px";
     }
+    
     const titleText = "🚀 ArabSpamX - Spam Detector";
-  const typingTarget = document.getElementById("typing-text");
+    const typingTarget = document.getElementById("typing-text");
 
-  let index = 0;
-  function typeTitle() {
-    if (index < titleText.length) {
-      typingTarget.textContent += titleText.charAt(index);
-      index++;
-      setTimeout(typeTitle, 70); // Speed of typing
+    let index = 0;
+    function typeTitle() {
+      if (index < titleText.length) {
+        typingTarget.textContent += titleText.charAt(index);
+        index++;
+        setTimeout(typeTitle, 70); // Speed of typing
+      }
     }
-  }
 
-  window.onload = typeTitle;
-  async function checkSpam() {
-  const tweet = document.getElementById("tweetInput").value;
-  const resultElement = document.getElementById("result");
-  const confidenceContainer = document.getElementById("confidenceContainer");
-
-  if (tweet.trim() === "") {
-    alert("Please enter a post!");
-    return;
-  }
-
-  resultElement.classList.remove("show");
-  resultElement.textContent = "";
-  confidenceContainer.style.display = "none";
-
-  try {
-    const response = await fetch("https://arabspam-backend.onrender.com/predict", {
-<<<<<<< HEAD
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tweet: tweet }),
+    // Back to top button functionality
+    const backToTopButton = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
     });
-=======
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ tweet: tweet }),
-});
->>>>>>> 68205670c7fe583baabe2a30a5299cfd077918c3
+    
+    backToTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-    if (!response.ok) throw new Error("Failed to fetch data");
+    window.onload = typeTitle;
+    
+    async function checkSpam() {
+      const tweet = document.getElementById("tweetInput").value;
+      const resultElement = document.getElementById("result");
+      const confidenceContainer = document.getElementById("confidenceContainer");
+      const historyCard = document.getElementById("historyCard");
+      const mainContent = document.getElementById("mainContent");
 
-    const data = await response.json();
-    const prediction = data.prediction;
-    const confidence = Math.round(data.confidence * 100); // convert to percentage
+      if (tweet.trim() === "") {
+        alert("Please enter a post!");
+        return;
+      }
 
-    let resultText = prediction === 1 ? "🚨 Spam" : "✅ Not Spam";
-    resultElement.textContent = `Result: ${resultText}`;
-    resultElement.classList.add("show");
-    resultElement.classList.toggle("spam", prediction === 1);
-    resultElement.classList.toggle("not-spam", prediction === 0);
+      resultElement.classList.remove("show");
+      resultElement.textContent = "";
+      confidenceContainer.style.display = "none";
 
-    // Show and update confidence bar
-    confidenceContainer.style.display = "block";
+      try {
+        const response = await fetch("https://arabspam-backend.onrender.com/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tweet: tweet }),
+        });
 
-// Get spam and ham percentages
-const spamPercent = Math.round(data.confidence * 100);
-const hamPercent = 100 - spamPercent;
+        if (!response.ok) throw new Error("Failed to fetch data");
 
-// Get the bar elements
-const hamBar = document.getElementById("hamBar");
-const spamBar = document.getElementById("spamBar");
+        const data = await response.json();
+        const prediction = data.prediction;
+        const confidence = Math.round(data.confidence * 100); // convert to percentage
 
-// Set widths
-hamBar.style.width = `${hamPercent}%`;
-spamBar.style.width = `${spamPercent}%`;
+        let resultText = prediction === 1 ? "🚨 Spam" : "✅ Not Spam";
+        resultElement.textContent = `Result: ${resultText}`;
+        resultElement.classList.add("show");
+        resultElement.classList.toggle("spam", prediction === 1);
+        resultElement.classList.toggle("not-spam", prediction === 0);
 
-// Set colors
-hamBar.style.backgroundColor = "#27ae60"; // green
-spamBar.style.backgroundColor = "#e74c3c"; // red
+        // Show and update confidence bar
+        confidenceContainer.style.display = "block";
+        // Calculate confidence based on prediction
+        // If prediction is 1 (spam), use confidence directly
+        // If prediction is 0 (ham), use the inverse confidence
+        const displayConfidence = prediction === 1 ? 
+          Math.round(data.confidence * 100) : 
+          Math.round((1 - data.confidence) * 100);
+        
+        // Get spam and ham percentages
+        const spamPercent = Math.round(data.confidence * 100);
+        const hamPercent = 100 - spamPercent;
 
-// Set text (only if wide enough to show text)
-hamBar.textContent = hamPercent > 10 ? `Ham ${hamPercent}%` : "";
-spamBar.textContent = spamPercent > 10 ? `Spam ${spamPercent}%` : "";
+        // Get the bar elements
+        const hamBar = document.getElementById("hamBar");
+        const spamBar = document.getElementById("spamBar");
 
-// Style the list item box
-const listItem = document.createElement("li");
-listItem.style.padding = "12px";
-listItem.style.marginBottom = "12px";
-listItem.style.border = "1px solid #e0e0e0";
-listItem.style.borderRadius = "10px";
-listItem.style.backgroundColor = "#f8f9fc";
-listItem.style.boxShadow = "0 1px 4px rgba(0, 0, 0, 0.03)";
-listItem.style.lineHeight = "1.5";
+        // Set widths
+        hamBar.style.width = `${hamPercent}%`;
+        spamBar.style.width = `${spamPercent}%`;
 
-listItem.innerHTML = `
-  <div style="font-size: 16px; font-weight: bold; color: ${prediction === 1 ? '#e74c3c' : '#27ae60'};">
-    ${prediction === 1 ? "🚫 Spam" : "✅ Not Spam"}
-  </div>
-  <div style="margin-top: 6px; font-size: 14px; color: #333;">
-    "${tweet}"
-  </div>
-  <div style="margin-top: 4px; font-size: 12px; color: #555;">
-    Confidence: ${confidence}%
-  </div>
-`;
+        // Set colors
+        hamBar.style.backgroundColor = "#27ae60"; // green
+        spamBar.style.backgroundColor = "#e74c3c"; // red
 
-historyList.prepend(listItem);
+        // Set text (only if wide enough to show text)
+        hamBar.textContent = hamPercent > 10 ? `Ham ${hamPercent}%` : "";
+        spamBar.textContent = spamPercent > 10 ? `Spam ${spamPercent}%` : "";
 
-// Limit to 5
-while (historyList.children.length > 5) {
-  historyList.removeChild(historyList.lastChild);
-}
+        // Show history card if it's not already visible
+        if (historyCard.style.display !== "block") {
+          historyCard.style.display = "block";
+          mainContent.classList.add("with-history");
+        }
 
-  } catch (error) {
-    console.error("❌ Error:", error);
-    resultElement.textContent = "Error checking post";
-    resultElement.classList.add("show");
-    resultElement.style.color = "#e74c3c";
-  }
-}
+        // Style the list item box
+        const listItem = document.createElement("li");
+        listItem.style.transition = "all 0.3s ease";
+
+        listItem.innerHTML = `
+          <div style="font-size: 16px; font-weight: bold; color: ${prediction === 1 ? '#e74c3c' : '#27ae60'}; display: flex; align-items: center; gap: 5px;">
+            ${prediction === 1 ? '<i class="fas fa-ban"></i> Spam' : '<i class="fas fa-check-circle"></i> Not Spam'}
+          </div>
+          <div style="margin-top: 8px; font-size: 14px; color: #333;">
+            "${tweet}"
+          </div>
+          <div style="margin-top: 6px; font-size: 12px; color: #555; display: flex; align-items: center; gap: 5px;">
+            <i class="fas fa-chart-pie"></i> Confidence: ${displayConfidence}%
+          </div>
+        `;
+
+        historyList.prepend(listItem);
+
+        // Add entrance animation
+        setTimeout(() => {
+          listItem.style.opacity = "1";
+          listItem.style.transform = "translateX(0)";
+        }, 10);
+
+        // Limit to 5
+        while (historyList.children.length > 5) {
+          historyList.removeChild(historyList.lastChild);
+        }
+
+      } catch (error) {
+        console.error("❌ Error:", error);
+        resultElement.textContent = "Error checking post";
+        resultElement.classList.add("show");
+        resultElement.style.color = "#e74c3c";
+      }
+    }
   </script>
 
 </body>
