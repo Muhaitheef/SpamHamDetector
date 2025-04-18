@@ -1,20 +1,24 @@
-
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import pickle
 import os
 
-# Initialize Flask app
-app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "*"}})  # Allow all origins
+# Initialize FastAPI app
+app = FastAPI()
 
-# Load Model & Vectorizer
+# Enable CORS for all origins (adjust for production if needed)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Load model and vectorizer
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "spam_model.pkl")
 VECTORIZER_PATH = os.path.join(BASE_DIR, "vectorizer.pkl")
-
-if not os.path.exists(MODEL_PATH) or not os.path.exists(VECTORIZER_PATH):
-    raise FileNotFoundError("Model or vectorizer file not found! Train the model first.")
 
 with open(MODEL_PATH, "rb") as model_file:
     model = pickle.load(model_file)
@@ -22,36 +26,29 @@ with open(MODEL_PATH, "rb") as model_file:
 with open(VECTORIZER_PATH, "rb") as vectorizer_file:
     vectorizer = pickle.load(vectorizer_file)
 
-# Prediction Route
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.json
-    print(f"🔍 Received data: {data}")
+# Warm-up the model
+print("🔥 Warming up the model...")
+_ = model.predict(vectorizer.transform(["This is a warm-up tweet"]))
+print("✅ Model warm-up complete.")
 
-    tweet = data.get("tweet", "")
-    if not tweet:
-        return jsonify({"error": "No tweet provided"}), 400
+# Define request model
+class TweetInput(BaseModel):
+    tweet: str
 
-    # Preprocess input
-    tweet_tfidf = vectorizer.transform([tweet])
+# Routes
+@app.post("/predict")
+async def predict(input: TweetInput):
+    tweet_tfidf = vectorizer.transform([input.tweet])
+    prediction = int(model.predict(tweet_tfidf)[0])
+    confidence = float(model.predict_proba(tweet_tfidf)[0][1])
+    return {
+        "prediction": prediction,
+        "confidence": round(confidence, 4)
+    }
 
-    # Predict
-    prediction = model.predict(tweet_tfidf)[0]
-    confidence = model.predict_proba(tweet_tfidf)[0][1]  # Probability of spam (class 1)
-
-    print(f"✅ Prediction: {prediction}, Confidence: {confidence:.4f}")
-
-    return jsonify({
-        "prediction": int(prediction),
-        "confidence": round(float(confidence), 4)
-    })
-
-# Start Flask Server
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "healthy", "message": "Model and server are running"}), 200
-
-if __name__ == "__main__":
-    print("🚀 Flask is running on http://127.0.0.1:5000")
-    app.run(debug=True, host="0.0.0.0", port=5050)
-    
+@app.get("/health")
+async def health():
+    return {
+        "status": "healthy",
+        "message": "Model and server are running"
+    }
