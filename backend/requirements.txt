@@ -1,4 +1,11 @@
-fastapi
-uvicorn
+
 scikit-learn
 flask-cors
+fastapi
+uvicorn
+torch
+transformers
+scikit-learn
+pydantic
+numpy
+requests
